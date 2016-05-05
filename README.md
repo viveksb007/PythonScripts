@@ -7,8 +7,8 @@ For now Copy magnet link and add to Torrent Client(UTorrent,Deluge,Transmission,
 
 2. Telegram Bot for downloading Videos (From YouTube for now) -> @vivtest_bot (VideoBot) <br>
 <div>
-<img src='/Demoimg/shot1.png' width='250' height='400'> 
-<img src='/Demoimg/shot2.png' width='250' height='400'>
+<img src='/Demoimg/shot1.png' width='300' height='550'> 
+<img src='/Demoimg/shot2.png' width='300' height='550'>
 </div>
 <img src='/Demoimg/botTerminal.png' > </br>
 
