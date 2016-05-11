@@ -1,5 +1,6 @@
 # TODO : 1. Use WebHook to host bot on Heroku  2. If image is uploaded to Bot, Give its tinyurl For Download.
 # https://github.com/rg3/youtube-dl  For reference with youtube-dl
+# For Making your OWN BOT. REFER : https://github.com/nickoala/telepot OR Feel free to ping me.
 
 from pprint import pprint
 import telepot
