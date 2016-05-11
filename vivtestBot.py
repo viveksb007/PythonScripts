@@ -1,8 +1,8 @@
 # TODO : 1. Use WebHook to host bot on Heroku  2. If image is uploaded to Bot, Give its tinyurl For Download.
-# For Making your OWN BOT. REFER : https://github.com/nickoala/telepot OR Feel free to ping me.
 
 from pprint import pprint
 import telepot
+import youtube_dl
 import time
 import random
 import hashlib
@@ -10,14 +10,18 @@ from pytube import YouTube
 from pprint import pprint
 from bs4 import BeautifulSoup
 import requests
+import subprocess
 import os
 import telegram
 
 TOKEN = "TOKEN_GENERATED_FROM_BOT_FATHER"
 SUPER_BASE_URL = "https://www.youtube.com"
 BASE_QUERY = 'https://www.youtube.com/results?search_query='
-DEFAULT_MESSAGE = "Didn`t recognise this stuff currently, Try in FUTURE "+telegram.Emoji.FACE_WITH_STUCK_OUT_TONGUE_AND_WINKING_EYE
-WELCOME_MESSAGE = "Hey there!\nFor now I give only Videos, so type video <title of video> and i will send it to you."+telegram.Emoji.DRAGON
+DEFAULT_MESSAGE = "Didn`t recognise this stuff currently, Try in FUTURE " + telegram.Emoji.FACE_WITH_STUCK_OUT_TONGUE_AND_WINKING_EYE
+WELCOME_MESSAGE = "Hey there!\nFor now I give only Videos, so type video <title of video> and i will send it to you." + telegram.Emoji.DRAGON
+command_to_download = 'youtube-dl -o "/home/viveksb007/Desktop/telegramtemp/videos/%(title)s.%(ext)s" '
+command_to_getFilename = "youtube-dl --get-filename -o '%(title)s.%(ext)s' "
+
 
 def getRandomId():
     return hashlib.md5(str(time.time()).encode('utf-8')).hexdigest()[:8]
@@ -29,8 +33,8 @@ def handle(msg):
     base_msg_text = str(msg['text']).split(' ', 1)
     if base_msg_text[0].lower() == 'video':
         title = base_msg_text[1]
-        ext = getVideo(title, chat_id, username)
-        sendVideo(msg, ext, title)
+        filename = getVideo(title, chat_id, username)
+        sendVideo(msg, filename, title)
     elif base_msg_text[0].lower() == '/start':
         bot.sendMessage(chat_id, WELCOME_MESSAGE)
     else:
@@ -39,14 +43,14 @@ def handle(msg):
     pprint(msg)
 
 
-def sendVideo(msg, ext, title):
+def sendVideo(msg, filename, title):
     chat_id = msg['from']['id']
     bot.sendChatAction(chat_id, 'upload_video')
-    #bot.sendMessage(chat_id, 'Would take some time, Net is slow :p \nDo something else till i get this done.')
-    vid = open('/home/viveksb007/Desktop/telegramtemp/videos/' + title + '.' + ext, 'rb')
+    # bot.sendMessage(chat_id, 'Would take some time, Net is slow :p \nDo something else till i get this done.')
+    vid = open('/home/viveksb007/Desktop/telegramtemp/videos/' + filename, 'rb')
     print("Sending Video ...")
     bot.sendVideo(chat_id, vid)
-    bot.sendMessage(chat_id, 'Enjoy '+telegram.Emoji.SMILING_FACE_WITH_OPEN_MOUTH)
+    bot.sendMessage(chat_id, 'Enjoy ' + telegram.Emoji.SMILING_FACE_WITH_OPEN_MOUTH)
     print("Video Send :)")
 
 
@@ -60,6 +64,13 @@ def getVideo(title, chat_id, username):
         print(i['href'])
         links_list.append(i['href'])
     url_to_download = SUPER_BASE_URL + links_list[0]
+
+    ## Now Good Internet
+    filename = subprocess.getoutput(command_to_getFilename + url_to_download)
+
+
+    ## For Slow Internet Connection
+    '''
     yt = YouTube(url_to_download)
     bot.sendMessage(chat_id, "Hey " + username + "\nTitle : " + yt.filename + "\nis on its way ..")
     yt.set_filename(title)
@@ -76,17 +87,18 @@ def getVideo(title, chat_id, username):
         vid = yt.get(extension='mp4', resolution='240p')
         ext = 'mp4'
 
-
-    #vid = yt.get(extension='3gp', resolution='144p')
-    #ext = '3gp'
+    '''
+    # vid = yt.get(extension='3gp', resolution='144p')
+    # ext = '3gp'
 
     print("Downloading ...")
-    if not os.path.exists('/home/viveksb007/Desktop/telegramtemp/videos/'+title+'.'+ext):
-        vid.download('/home/viveksb007/Desktop/telegramtemp/videos/')
+    if not os.path.exists('/home/viveksb007/Desktop/telegramtemp/videos/' + filename):
+        os.system(command_to_download + url_to_download)
         print("Download Completed")
     else:
         print("Already Downloaded")
-    return ext
+    bot.sendMessage(chat_id, "Hey " + username + "\nTitle : " + filename + "\nis on its way ..")
+    return filename
 
 
 if __name__ == '__main__':
@@ -95,4 +107,3 @@ if __name__ == '__main__':
     while True:
         # FOR Infinite Time
         time.sleep(10)
-
