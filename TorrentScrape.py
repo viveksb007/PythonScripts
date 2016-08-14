@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-url = "https://kat.cr/usearch/"
+url = "https://dxtorrent.com/usearch/"
 keyValue = input('Search For Torrent\n')
 query = url+keyValue
 response = requests.get(query.replace(' ',"%20"))
