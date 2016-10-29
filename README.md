@@ -12,3 +12,9 @@ For now Copy magnet link and add to Torrent Client(UTorrent,Deluge,Transmission,
 </div>
 <img src='/Demoimg/botTerminal.png' > </br>
 
+3. Playing with Graph API  : Posting and Downloading album images from python script
+
+Post : https://viveksb007.wordpress.com/2016/08/14/facebook-graph-api-python/
+
+<br>
+![FBpost](/Demoimg/fbpost.png)
