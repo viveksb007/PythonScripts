@@ -18,3 +18,8 @@ Post : https://viveksb007.wordpress.com/2016/08/14/facebook-graph-api-python/
 
 <br>
 ![FBpost](/Demoimg/fbpost.png)
+
+<br>
+4. Made Instagram-Scraper script to download images from public profiles of Instagram. Based on this made an API and hosted on Heroku : [http://insta-scraper.herokuapp.com/](http://insta-scraper.herokuapp.com/)
+
+![](/Demoimg/insta-scraper.gif)
